@@ -1,0 +1,51 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: enrollment-service  # 微服务名称（Nacos 注册的服务名）
+
+  datasource:
+    url: jdbc:mysql://192.168.173.1:3306/enrollment_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=utf-8
+    username: root
+    password: lilili2004
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # 自动更新表结构
+    show-sql: true  # 打印 SQL 日志
+    properties:
+      hibernate:
+        format_sql: true  # 格式化 SQL
+        dialect: org.hibernate.dialect.MySQL8Dialect  # 手动指定 MySQL 8 方言
+    open-in-view: false
+
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: localhost:8848  # 本地开发环境
+        namespace: dev  # 命名空间（需在 Nacos 控制台创建）
+        register-enabled: true
+        group: COURSEHUB_GROUP  # 分组
+        ephemeral: true  # 临时实例（服务宕机后 Nacos 自动注销）
+        heart-beat-interval: 5000  # 心跳间隔 5s
+        heart-beat-timeout: 15000  # 心跳超时 15s
+
+logging:
+  level:
+    root: INFO
+    org.hibernate: DEBUG  # 打印 Hibernate 详细日志
+    org.springframework.jdbc: DEBUG  # 打印 JDBC 连接日志
+    com.alibaba.cloud.nacos: DEBUG
+    com.alibaba.nacos: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health  # 暴露 /actuator/health 端点
+  endpoint:
+    health:
+      show-details: always  # 显示健康详情，便于 Nacos 识别服务状态

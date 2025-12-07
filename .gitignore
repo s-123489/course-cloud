@@ -1,0 +1,11 @@
+target/
+*.class
+*.jar
+.idea/
+*.iml
+.DS_Store
+*.log
+logs/
+node_modules/
+*.zip
+*.tar.gz

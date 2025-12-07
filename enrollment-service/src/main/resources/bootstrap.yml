@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: enrollment-service
+  cloud:
+    nacos:
+      server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+      config:
+        file-extension: yaml
+        namespace: ${NACOS_NAMESPACE:dev}
+        group: DEFAULT_GROUP
+        refresh-enabled: true
+        # 共享配置
+        shared-configs:
+          - data-id: common-mysql.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+          - data-id: common-redis.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+          - data-id: common-log.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}

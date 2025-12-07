@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://enrollment-db:3306/enrollment_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:enrollment_user}
+    password: ${DB_PASSWORD:enrollment_pass}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR:nacos:8848}
+
+# ✅ Docker 环境的服务地址（不要 services 前缀）
+user-service:
+  url: ${USER_SERVICE_URL:http://user-service:8081}
+
+catalog-service:
+  url: ${CATALOG_SERVICE_URL:http://catalog-service:8082}
+
+logging:
+  level:
+    root: INFO
+    com.zjgsu.coursecloud.enrollment: DEBUG
