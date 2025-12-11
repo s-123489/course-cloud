@@ -106,7 +106,7 @@ services:
     container_name: user-service-1
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://user-db:3306/user_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://user-db:3306/user_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: user_user
       SPRING_DATASOURCE_PASSWORD: user_pass
       SPRING_APPLICATION_NAME: user-service
@@ -125,7 +125,7 @@ services:
     container_name: user-service-2
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://user-db:3306/user_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://user-db:3306/user_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: user_user
       SPRING_DATASOURCE_PASSWORD: user_pass
       SPRING_APPLICATION_NAME: user-service
@@ -144,7 +144,7 @@ services:
     container_name: user-service-3
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://user-db:3306/user_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://user-db:3306/user_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: user_user
       SPRING_DATASOURCE_PASSWORD: user_pass
       SPRING_APPLICATION_NAME: user-service
@@ -167,7 +167,7 @@ services:
     container_name: catalog-service-1
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://catalog-db:3306/catalog_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://catalog-db:3306/catalog_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: catalog_user
       SPRING_DATASOURCE_PASSWORD: catalog_pass
       SPRING_APPLICATION_NAME: catalog-service
@@ -186,7 +186,7 @@ services:
     container_name: catalog-service-2
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://catalog-db:3306/catalog_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://catalog-db:3306/catalog_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: catalog_user
       SPRING_DATASOURCE_PASSWORD: catalog_pass
       SPRING_APPLICATION_NAME: catalog-service
@@ -205,7 +205,7 @@ services:
     container_name: catalog-service-3
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://catalog-db:3306/catalog_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://catalog-db:3306/catalog_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: catalog_user
       SPRING_DATASOURCE_PASSWORD: catalog_pass
       SPRING_APPLICATION_NAME: catalog-service
@@ -228,7 +228,7 @@ services:
     container_name: enrollment-service
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: jdbc:mysql://enrollment-db:3306/enrollment_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://enrollment-db:3306/enrollment_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: enrollment_user
       SPRING_DATASOURCE_PASSWORD: enrollment_pass
       SPRING_APPLICATION_NAME: enrollment-service
