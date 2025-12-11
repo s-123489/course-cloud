@@ -1,0 +1,170 @@
+version: "3.8"
+
+networks:
+  course-network:
+    driver: bridge
+
+volumes:
+  user-data:
+  catalog-data:
+  enrollment-data:
+  nacos-data:
+  nacos-logs:
+
+services:
+  # ========== Nacos 服务注册中心 ==========
+  nacos:
+    image: nacos/nacos-server:v2.2.3
+    container_name: nacos
+    environment:
+      - MODE=standalone
+      - JVM_XMS=128m           # 降低内存
+      - JVM_XMX=256m           # 降低内存
+      - JVM_XMN=64m            # 降低内存
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    volumes:
+      - nacos-data:/home/nacos/data
+      - nacos-logs:/home/nacos/logs
+    networks:
+      - course-network
+    restart: unless-stopped
+
+  # ========== MySQL 数据库 ==========
+  user-db:
+    image: mysql:8.4
+    container_name: user-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: user_db
+      MYSQL_USER: user_user
+      MYSQL_PASSWORD: user_pass
+    ports:
+      - "3309:3306"
+    volumes:
+      - user-data:/var/lib/mysql
+    networks:
+      - course-network
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=50           # 减少连接数
+      - --innodb-buffer-pool-size=64M  # 降低内存
+    restart: unless-stopped
+
+  catalog-db:
+    image: mysql:8.4
+    container_name: catalog-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: catalog_db
+      MYSQL_USER: catalog_user
+      MYSQL_PASSWORD: catalog_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - catalog-data:/var/lib/mysql
+    networks:
+      - course-network
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=50
+      - --innodb-buffer-pool-size=64M
+    restart: unless-stopped
+
+  enrollment-db:
+    image: mysql:8.4
+    container_name: enrollment-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: enrollment_db
+      MYSQL_USER: enrollment_user
+      MYSQL_PASSWORD: enrollment_pass
+    ports:
+      - "3308:3306"
+    volumes:
+      - enrollment-data:/var/lib/mysql
+    networks:
+      - course-network
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=50
+      - --innodb-buffer-pool-size=64M
+    restart: unless-stopped
+
+  # ========== User Service - 仅1个实例 ==========
+  user-service-1:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    image: course-cloud-user-service:1.1.0
+    container_name: user-service-1
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://user-db:3306/user_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: user_user
+      SPRING_DATASOURCE_PASSWORD: user_pass
+      SPRING_APPLICATION_NAME: user-service
+      SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR: nacos:8848
+      SERVER_PORT: 8081
+      JAVA_OPTS: "-Xms128m -Xmx256m"  # 限制JVM内存
+    ports:
+      - "18081:8081"
+    depends_on:
+      - user-db
+      - nacos
+    networks:
+      - course-network
+
+  # ========== Catalog Service - 仅1个实例 ==========
+  catalog-service-1:
+    build:
+      context: ./catalog-service
+      dockerfile: Dockerfile
+    image: course-cloud-catalog-service:1.1.0
+    container_name: catalog-service-1
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://catalog-db:3306/catalog_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: catalog_user
+      SPRING_DATASOURCE_PASSWORD: catalog_pass
+      SPRING_APPLICATION_NAME: catalog-service
+      SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR: nacos:8848
+      SERVER_PORT: 8082
+      JAVA_OPTS: "-Xms128m -Xmx256m"  # 限制JVM内存
+    ports:
+      - "18091:8082"
+    depends_on:
+      - catalog-db
+      - nacos
+    networks:
+      - course-network
+
+  # ========== Enrollment Service ==========
+  enrollment-service:
+    build:
+      context: ./enrollment-service
+      dockerfile: Dockerfile
+    image: course-cloud-enrollment-service:1.1.0
+    container_name: enrollment-service
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:mysql://enrollment-db:3306/enrollment_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: enrollment_user
+      SPRING_DATASOURCE_PASSWORD: enrollment_pass
+      SPRING_APPLICATION_NAME: enrollment-service
+      SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR: nacos:8848
+      SERVER_PORT: 8083
+      JAVA_OPTS: "-Xms128m -Xmx256m"  # 限制JVM内存
+    ports:
+      - "8083:8083"
+    depends_on:
+      - enrollment-db
+      - user-service-1
+      - catalog-service-1
+      - nacos
+    networks:
+      - course-network
