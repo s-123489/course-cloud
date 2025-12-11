@@ -9,3 +9,4 @@ logs/
 node_modules/
 *.zip
 *.tar.gz
+.claude/settings.local.json

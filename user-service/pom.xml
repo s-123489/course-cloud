@@ -12,7 +12,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.zjgsu.lll</groupId>
+    <groupId>com.zjgsu.syt</groupId>
     <artifactId>user-service</artifactId>
     <version>1.0.0</version>
     <name>user-service</name>
