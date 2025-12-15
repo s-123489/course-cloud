@@ -1,8 +1,8 @@
-package com.zjgsu.coursecloud.user.controller;
+package com.zjgsu.syt.coursecloud.user.controller;
 
-import com.zjgsu.coursecloud.user.model.Student;
-import com.zjgsu.coursecloud.user.model.Teacher;
-import com.zjgsu.coursecloud.user.service.UserService;
+import com.zjgsu.syt.coursecloud.user.model.Student;
+import com.zjgsu.syt.coursecloud.user.model.Teacher;
+import com.zjgsu.syt.coursecloud.user.service.UserService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +62,7 @@ public class UserController {
         Student student = new Student(
                 request.username(),
                 request.email(),
+                request.password(),
                 request.studentId(),
                 request.name(),
                 request.major(),
@@ -195,6 +196,7 @@ public class UserController {
         Teacher teacher = new Teacher(
                 request.username(),
                 request.email(),
+                request.password(),
                 request.teacherId(),
                 request.name(),
                 request.department(),
@@ -334,6 +336,7 @@ public class UserController {
     public record StudentRequest(
             String username,
             String email,
+            String password,
             String studentId,
             String name,
             String major,
@@ -367,6 +370,7 @@ public class UserController {
     public record TeacherRequest(
             String username,
             String email,
+            String password,
             String teacherId,
             String name,
             String department,

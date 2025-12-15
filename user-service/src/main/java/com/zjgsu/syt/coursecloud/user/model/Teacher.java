@@ -1,4 +1,4 @@
-package com.zjgsu.coursecloud.user.model;
+package com.zjgsu.syt.coursecloud.user.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
@@ -27,8 +27,8 @@ public class Teacher extends User {
         super();
     }
 
-    public Teacher(String username, String email, String teacherId, String name, String department, String title) {
-        super(username, email, UserType.TEACHER);
+    public Teacher(String username, String email, String password, String teacherId, String name, String department, String title) {
+        super(username, email, password, UserType.TEACHER);
         this.teacherId = teacherId;
         this.name = name;
         this.department = department;

@@ -1,6 +1,6 @@
-package com.zjgsu.coursecloud.user.repository;
+package com.zjgsu.syt.coursecloud.user.repository;
 
-import com.zjgsu.coursecloud.user.model.Student;
+import com.zjgsu.syt.coursecloud.user.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

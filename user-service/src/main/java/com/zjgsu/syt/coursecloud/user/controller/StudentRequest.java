@@ -1,4 +1,4 @@
-package com.zjgsu.coursecloud.user.controller;
+package com.zjgsu.syt.coursecloud.user.controller;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +11,9 @@ public record StudentRequest(
     @NotBlank(message = "Email is required")
     @Email(message = "Email must be valid")
     String email,
+
+    @NotBlank(message = "Password is required")
+    String password,
 
     @NotBlank(message = "Student ID is required")
     String studentId,

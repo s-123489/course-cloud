@@ -1,6 +1,6 @@
-package com.zjgsu.coursecloud.user.controller;
+package com.zjgsu.syt.coursecloud.user.controller;
 
-import com.zjgsu.coursecloud.user.model.Student;
+import com.zjgsu.syt.coursecloud.user.model.Student;
 
 import java.time.LocalDateTime;
 

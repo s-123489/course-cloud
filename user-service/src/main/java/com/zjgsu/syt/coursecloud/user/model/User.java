@@ -1,4 +1,4 @@
-package com.zjgsu.coursecloud.user.model;
+package com.zjgsu.syt.coursecloud.user.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -24,6 +24,10 @@ public abstract class User {
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
+    @NotBlank(message = "Password is required")
+    @Column(nullable = false, length = 255)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type_enum", nullable = false, insertable = false, updatable = false)
     private UserType userType;
@@ -35,9 +39,10 @@ public abstract class User {
         // JPA requires no-arg constructor
     }
 
-    protected User(String username, String email, UserType userType) {
+    protected User(String username, String email, String password, UserType userType) {
         this.username = username;
         this.email = email;
+        this.password = password;
         this.userType = userType;
     }
 
@@ -69,6 +74,14 @@ public abstract class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public UserType getUserType() {

@@ -1,5 +1,3 @@
-version: "3.8"
-
 networks:
   course-network:
     driver: bridge
@@ -241,5 +239,27 @@ services:
       - user-service-1
       - catalog-service-1
       - nacos
+    networks:
+      - course-network
+
+  # ========== Gateway Service - API 网关 ==========
+  gateway-service:
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    image: course-cloud-gateway-service:2.0.0
+    container_name: gateway-service
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_APPLICATION_NAME: gateway-service
+      SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR: nacos:8848
+      SERVER_PORT: 8090
+    ports:
+      - "8090:8090"
+    depends_on:
+      - nacos
+      - user-service-1
+      - catalog-service-1
+      - enrollment-service
     networks:
       - course-network

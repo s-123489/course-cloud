@@ -1,4 +1,4 @@
-package com.zjgsu.coursecloud.user.model;
+package com.zjgsu.syt.coursecloud.user.model;
 
 public enum UserType {
     STUDENT,

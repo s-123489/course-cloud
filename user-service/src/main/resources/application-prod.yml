@@ -1,14 +1,52 @@
 spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME:user-service}
+
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://user-db:3306/user_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
     username: ${SPRING_DATASOURCE_USERNAME:user_user}
     password: ${SPRING_DATASOURCE_PASSWORD:user_pass}
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+
   cloud:
     nacos:
       discovery:
-        server-addr: ${SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR:nacos:8848}  # Docker 环境使用容器名
+        enabled: true
+        server-addr: ${SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR:nacos:8848}
+        namespace: dev
+        register-enabled: true
+        group: COURSEHUB_GROUP
+        ephemeral: true
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+
+# JWT 配置（必须与 Gateway 一致）
+jwt:
+  secret: coursecloud-jwt-secret-key-for-authentication-minimum-256-bits-required-for-hs512-algorithm
+  expiration: 86400000
+
+server:
+  port: ${SERVER_PORT:8081}
 
 logging:
   level:
     root: ${LOGGING_LEVEL_ROOT:INFO}
+    com.zjgsu.syt.coursecloud.user: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always

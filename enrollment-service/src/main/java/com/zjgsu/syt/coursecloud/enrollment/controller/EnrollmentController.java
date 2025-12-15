@@ -6,12 +6,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
 import java.time.LocalDateTime;
@@ -26,9 +24,6 @@ public class EnrollmentController {
     private static final Logger log = LoggerFactory.getLogger(EnrollmentController.class);
 
     private final EnrollmentService enrollmentService;
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Value("${server.port}")
     private String currentPort;
@@ -136,28 +131,7 @@ public class EnrollmentController {
         }
 
         response.put("timestamp", LocalDateTime.now());
-
-        // 测试调用 user-service
-        try {
-            Map<String, Object> userTest = restTemplate.getForObject(
-                    "http://user-service/api/students/test",
-                    Map.class
-            );
-            response.put("user-service", userTest);
-        } catch (Exception e) {
-            response.put("user-service-error", e.getMessage());
-        }
-
-        // 测试调用 catalog-service
-        try {
-            Map<String, Object> catalogTest = restTemplate.getForObject(
-                    "http://catalog-service/api/courses/test",
-                    Map.class
-            );
-            response.put("catalog-service", catalogTest);
-        } catch (Exception e) {
-            response.put("catalog-service-error", e.getMessage());
-        }
+        response.put("message", "Enrollment Service is running with OpenFeign integration");
 
         return response;
     }

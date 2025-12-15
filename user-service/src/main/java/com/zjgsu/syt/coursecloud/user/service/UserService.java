@@ -1,9 +1,9 @@
-package com.zjgsu.coursecloud.user.service;
+package com.zjgsu.syt.coursecloud.user.service;
 
-import com.zjgsu.coursecloud.user.model.Student;
-import com.zjgsu.coursecloud.user.model.Teacher;
-import com.zjgsu.coursecloud.user.repository.StudentRepository;
-import com.zjgsu.coursecloud.user.repository.TeacherRepository;
+import com.zjgsu.syt.coursecloud.user.model.Student;
+import com.zjgsu.syt.coursecloud.user.model.Teacher;
+import com.zjgsu.syt.coursecloud.user.repository.StudentRepository;
+import com.zjgsu.syt.coursecloud.user.repository.TeacherRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

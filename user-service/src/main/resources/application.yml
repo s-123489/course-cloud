@@ -41,6 +41,11 @@ logging:
     com.alibaba.cloud.nacos: DEBUG
     com.alibaba.nacos: DEBUG
 
+# ==================== JWT 配置 ====================
+jwt:
+  secret: coursecloud-jwt-secret-key-for-authentication-minimum-256-bits-required-for-hs512-algorithm  # JWT 密钥（必须与 Gateway 一致）
+  expiration: 86400000  # Token 有效期（24 小时）
+
 management:
   endpoints:
     web:

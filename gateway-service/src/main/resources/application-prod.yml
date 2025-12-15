@@ -1,0 +1,118 @@
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME:gateway-service}
+
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: ${SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR:nacos:8848}
+        namespace: dev
+        register-enabled: true
+        group: COURSEHUB_GROUP
+        ephemeral: true
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+
+    gateway:
+      # ==================== 路由配置 ====================
+      routes:
+        # User Service 路由 - 学生接口（精确匹配）
+        - id: user-service-students-exact
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/students
+          filters:
+            - RewritePath=/api/users/students, /api/students
+
+        # User Service 路由 - 学生接口（子路径）
+        - id: user-service-students
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/students/**
+          filters:
+            - RewritePath=/api/users/students/(?<segment>.*), /api/students/$\{segment}
+
+        # User Service 路由 - 教师接口（精确匹配）
+        - id: user-service-teachers-exact
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/teachers
+          filters:
+            - RewritePath=/api/users/teachers, /api/teachers
+
+        # User Service 路由 - 教师接口（子路径）
+        - id: user-service-teachers
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/teachers/**
+          filters:
+            - RewritePath=/api/users/teachers/(?<segment>.*), /api/teachers/$\{segment}
+
+        # User Service 路由 - 认证接口
+        - id: user-service-auth
+          uri: lb://user-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/auth/(?<segment>.*), /auth/$\{segment}
+
+        # User Service 路由 - 其他接口
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - RewritePath=/api/users, /api/students
+
+        # Catalog Service 路由
+        - id: catalog-service
+          uri: lb://catalog-service
+          predicates:
+            - Path=/api/courses/**
+
+        # Enrollment Service 路由
+        - id: enrollment-service
+          uri: lb://enrollment-service
+          predicates:
+            - Path=/api/enrollments/**
+
+      # ==================== CORS 跨域配置 ====================
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+
+# ==================== JWT 配置 ====================
+jwt:
+  secret: coursecloud-jwt-secret-key-for-authentication-minimum-256-bits-required-for-hs512-algorithm
+  expiration: 86400000
+
+server:
+  port: ${SERVER_PORT:8090}
+
+# ==================== 日志配置 ====================
+logging:
+  level:
+    root: INFO
+    com.zjgsu.syt.coursecloud.gateway: DEBUG
+    org.springframework.cloud.gateway: INFO
+
+# ==================== 健康检查配置 ====================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,gateway
+  endpoint:
+    health:
+      show-details: always
